@@ -1,0 +1,6 @@
+@Kitapix.WebAPI_HostAddress = http://localhost:5133
+
+GET {{Kitapix.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
