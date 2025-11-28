@@ -18,12 +18,13 @@ Visual Studio'nun standart solution formatına uygun olarak
 düzenlenmiştir.
 
 
-``` Kitapix.sln
+```
+ Kitapix.sln
 └── src/
-├── Kitapix.Domain
-├── Kitapix.Application
-├── Kitapix.Infrastructure
-└── Kitapix.WebAPI
+    ├── Kitapix.Domain
+    ├── Kitapix.Application
+    ├── Kitapix.Infrastructure
+    └── Kitapix.WebAPI
 ```
 
 
