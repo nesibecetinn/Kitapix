@@ -1,0 +1,52 @@
+services:
+
+  mysqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mysqlserver  
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Passw@rd123."
+    ports:
+      - "1440:1433"
+    networks:
+      - mydockerprojectnet
+    volumes:
+      - mssql-data:/var/opt/mssql
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - mydockerprojectnet
+
+  kitapix.webapi:
+    image: kitapixwebapi
+    build:
+      context: .
+      dockerfile: Kitapix.WebAPI/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://0.0.0.0:8080"
+    
+      MongoDB__ConnectionString: "mongodb://mongodb:27017"
+      MongoDB__DatabaseName: "Kitapix"
+      MongoDB__BookChaptersCollection: "BookChapters"
+    depends_on:
+      - mysqlserver
+      - mongodb
+    networks:
+      - mydockerprojectnet
+
+networks:
+  mydockerprojectnet:
+    driver: bridge
+
+volumes:
+  mongo-data:
+  mssql-data:

@@ -52,9 +52,9 @@ namespace Kitapix.Infrastructure.Mapping
 			CreateMap<CreateCategoryCommand, Category>().ReverseMap();
 			CreateMap<UpdateCategoryCommand, Category>().ReverseMap();
 			CreateMap<GetByIdCategoryQuery, Category>().ReverseMap();
-			CreateMap<GetAllCategoryQuery, Category>().ReverseMap();
+            CreateMap<Category, GetAllCategoryQueryResponse>().ReverseMap();
 
-			CreateMap<CreateUserBookCategoriesCommand, List<UserBookCategory>>()
+            CreateMap<CreateUserBookCategoriesCommand, List<UserBookCategory>>()
 				.ConvertUsing(src => src.CategoryIds
 					.Select(categoryId => new UserBookCategory
 					{

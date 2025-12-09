@@ -14,15 +14,15 @@ namespace Kitapix.Application.Features.BookFeatures
 	{
 		public required string Title { get; set; }
 		public required string Description { get; set; }
-		public IFormFile? CoverImage { get; set; }
+		public string? CoverImageUrl { get; set; }
 		public List<int> CategoryIds { get; set; } // bir kitabın birden fazla kategorisi olabilir
 	}
 	public class CreateBookValidator : AbstractValidator<CreateBookCommand>
 	{
 		public CreateBookValidator()
 		{
-			RuleFor(x => x.Title).NotEmpty().WithMessage("Başlık boş olamaz");
-			RuleFor(x => x.Description).NotEmpty().WithMessage("Açıklama boş olamaz");
+			//RuleFor(x => x.Title).NotEmpty().WithMessage("Başlık boş olamaz");
+			//RuleFor(x => x.Description).NotEmpty().WithMessage("Açıklama boş olamaz");
 
 		}
 	}
@@ -59,12 +59,12 @@ namespace Kitapix.Application.Features.BookFeatures
 			book.AuthorId = 1;
 
 	
-			if (request.CoverImage != null)
-			{
-				using var stream = request.CoverImage.OpenReadStream();
-				string imageUrl = await _imageService.UploadImageAsync(stream, request.CoverImage.FileName, ImageType.BookCover);
-				book.CoverImageUrl = imageUrl;
-			}
+			//if (request.CoverImage != null)
+			//{
+			//	using var stream = request.CoverImage.OpenReadStream();
+			//	string imageUrl = await _imageService.UploadImageAsync(stream, request.CoverImage.FileName, ImageType.BookCover);
+			//	book.CoverImageUrl = imageUrl;
+			//}
 
 		
 			book.Stats = new BookStats

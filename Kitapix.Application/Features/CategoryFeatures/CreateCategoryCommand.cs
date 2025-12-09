@@ -13,14 +13,14 @@ namespace Kitapix.Application.Features.CategoryFeatures
 	public class CreateCategoryCommand : IRequest<CreateCategoryCommandResponse>
 	{	
 		public string Name { get; set; }
-		public IFormFile? Url { get; set; }
+		public string Url { get; set; }
 	}
 
 	public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
 	{
 		public CreateCategoryCommandValidator() {
 			RuleFor(x => x.Name).NotEmpty().WithMessage("Ad alanı boş olamaz");
-			RuleFor(x => x.Url).NotEmpty().WithMessage("Url alanı boş olamaz");
+			//RuleFor(x => x.Url).NotEmpty().WithMessage("Url alanı boş olamaz");
 
 		}
 	}
@@ -50,12 +50,12 @@ namespace Kitapix.Application.Features.CategoryFeatures
 			category = _mapper.Map<Category>(request);
 
 			
-			if (request.Url != null)
-			{
-				using var stream = request.Url.OpenReadStream();
-				var imageUrl = await _imageService.UploadImageAsync(stream, request.Url.FileName, ImageType.CategoryImage);
-				category.Url = imageUrl;
-			}
+			//if (request.Url != null)
+			//{
+			//	using var stream = request.Url.OpenReadStream();
+			//	var imageUrl = await _imageService.UploadImageAsync(stream, request.Url.FileName, ImageType.CategoryImage);
+			//	category.Url = imageUrl;
+			//}
 
 			await _categoryRepository.AddAsync(category);
 			await _unitOfWork.SaveChangesAsync();
