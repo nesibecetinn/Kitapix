@@ -57,8 +57,12 @@ namespace Kitapix.Infrastructure
 			services.AddScoped<IJwtTokenService, JwtTokenService>();
 			
 			services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
-			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-				.AddJwtBearer(options =>
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; 
+            })
+                .AddJwtBearer(options =>
 				{
 					var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>();
 					options.TokenValidationParameters = new TokenValidationParameters
@@ -76,8 +80,8 @@ namespace Kitapix.Infrastructure
 					options.ClientId = configuration["Google:ClientId"]!;
 					options.ClientSecret = configuration["Google:ClientSecret"]!;
 				});
-
-			return services;
+            services.AddAuthorization();
+            return services;
 		}
 	}
 }

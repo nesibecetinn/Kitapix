@@ -2,10 +2,12 @@
 using Kitapix.Application.Features.AuthFeatures;
 using Kitapix.WebAPI.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kitapix.WebAPI.Controllers
 {
+	[AllowAnonymous]
 	public class AuthController : BaseApiController
 	{
 		public AuthController(IMediator mediator) : base(mediator)
