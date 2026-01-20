@@ -7,6 +7,7 @@ using Kitapix.Domain.Repositories;
 using Kitapix.Domain.UnitOfWork;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Kitapix.Application.Features.BookFeatures
 {
@@ -30,44 +31,47 @@ namespace Kitapix.Application.Features.BookFeatures
 	{
 		private readonly IBookRepository _bookRepository;
 		private readonly IMapper _mapper;
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly IHttpContextAccessor _contextAccessor;
+		private readonly IUnitOfWork _unitOfWork;		
 		private readonly IBookStatRepository _bookStatRepository;
 		private readonly ICategoryRepository _categoryRepository;
 		private readonly IImageService _imageService;
+		private readonly ICurrentUserService _currentUserService;
 
-		public CreateBookHandler(IBookRepository bookRepository,
+        public CreateBookHandler(IBookRepository bookRepository,
 			IMapper mapper,
 			IUnitOfWork unitOfWork,
 			IHttpContextAccessor contextAccessor,
 			IBookStatRepository bookStatRepository,
 			ICategoryRepository categoryRepository,
-			IImageService imageService)
+			IImageService imageService,
+            ICurrentUserService currentUserService)
 		{
 			_bookRepository = bookRepository;
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
-			_contextAccessor = contextAccessor;
 			_bookStatRepository = bookStatRepository;
 			_categoryRepository = categoryRepository;
 			_imageService = imageService;
-		}
+			_currentUserService = currentUserService;
+        }
 
 		public async Task<CreateBookResponse> Handle(CreateBookCommand request, CancellationToken cancellationToken)
 		{
 			var book = _mapper.Map<Book>(request);
-			book.AuthorId = 1;
+			
+			book.AuthorId = _currentUserService.UserId;
 
-	
-			//if (request.CoverImage != null)
-			//{
-			//	using var stream = request.CoverImage.OpenReadStream();
-			//	string imageUrl = await _imageService.UploadImageAsync(stream, request.CoverImage.FileName, ImageType.BookCover);
-			//	book.CoverImageUrl = imageUrl;
-			//}
 
-		
-			book.Stats = new BookStats
+
+            //if (request.CoverImage != null)
+            //{
+            //	using var stream = request.CoverImage.OpenReadStream();
+            //	string imageUrl = await _imageService.UploadImageAsync(stream, request.CoverImage.FileName, ImageType.BookCover);
+            //	book.CoverImageUrl = imageUrl;
+            //}
+
+
+            book.Stats = new BookStats
 			{
 				LikeCount = 0,
 				ViewCount = 0
